@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>Задайте вопрос</title>
+</head>
+<body>
+<nav th:replace="~{fragments/common:: nav}"></nav>
+<div class="container mt-5">
+    <form th:method="post" th:action="@{/questions/ask}" th:object="${questionDTO}" class="form-inline">
+        <input class="form-control is-valid" th:if="${!#fields.hasErrors()}" type="text" name="topic" th:field="*{topic}" placeholder="Тема вопроса">
+        <input class="form-control is-invalid" th:if="${#fields.hasErrors()}" type="text" name="topic" th:field="*{topic}" placeholder="Тема вопроса">
+        <div class="invalid-feedback" th:if="${#fields.hasErrors()}" th:errors="*{topic}" style="color:red">Topic error</div>
+        <textarea class="form-control is-valid" th:if="${!#fields.hasErrors()}" rows="5" name="question" th:field="*{question}" placeholder="Ваш вопрос"></textarea>
+        <textarea class="form-control is-invalid" th:if="${#fields.hasErrors()}" rows="5" name="question" th:field="*{question}" placeholder="Ваш вопрос"></textarea>
+        <div class="invalid-feedback" th:if="${#fields.hasErrors()}" th:errors="*{question}" style="color:red">Question error</div>
+        <input class="form-check-input" name="isAnonymous" type="checkbox" id="isAnonymous" th:field="*{anonymous}">
+        <label class="form-check-label" for="isAnonymous">
+            Анонимно
+        </label>
+        <input class="btn btn-primary" type="submit" value="Спросить">
+    </form>
+</div>
+<div th:replace="~{fragments/common:: script}"></div>
+</body>
+</html>

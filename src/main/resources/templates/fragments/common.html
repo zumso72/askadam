@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"/>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Спроси Адама Ельмурзаева</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item" sec:authorize="isAnonymous()">
+            <a class="nav-link" href="/login">Войти</a>
+          </li>
+          <li class="nav-item" sec:authorize="isAnonymous()">
+            <a class="nav-link" href="/registration">Зарегистрироваться</a>
+          </li>
+          <li class="nav-item" sec:authorize="hasAuthority('QUESTIONER')">
+            <a class="nav-link" href="/questions/ask">Задать вопрос</a>
+          </li>
+          <li sec:authorize="hasAuthority('QUESTIONER')" class="nav-item" th:if="${!isNewAnswers}">
+            <a class="nav-link" th:href="@{/users/{userId}(userId=${#authentication.getPrincipal().getId()})}">Мои вопросы</a>
+          </li>
+          <li sec:authorize="hasAuthority('QUESTIONER')" class="nav-item" th:if="${isNewAnswers}">
+            <a class="nav-link" style="color: red" th:href="@{/users/{userId}(userId=${#authentication.getPrincipal().getId()})}">Мои вопросы</a>
+          </li>
+          <li sec:authorize="hasAuthority('ANSWERER')" class="nav-item">
+            <a class="nav-link" href="/answer">Ответить на вопросы</a>
+          </li>
+        </ul>
+        <a class="d-flex" href="/users/profile" style="margin-right: 10px;" sec:authorize="isAuthenticated()"
+           th:text="${#authentication.getPrincipal().getFirstName()}">Name</a>
+        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+          <input class="btn btn-primary" type="submit" value="Выйти"/>
+        </form>
+      </div>
+    </div>
+  </nav>
+<div th:fragment="script">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+</div>
+</body>
+</html>

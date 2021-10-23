@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <title>Вопрос</title>
+</head>
+<body>
+<nav th:replace="~{fragments/common:: nav}"></nav>
+<div class="container mt-5">
+  <div class="card">
+    <a th:href="@{/users/{userId}(userId=${question.getAuthor().getId()})}" class="card-header" th:text="${question.getAuthor().getFirstName() + ' ' + question.getAuthor().getLastName()}">
+    </a>
+    <div class="card-body">
+      <h5 class="card-title" th:if="${question.getAnswer() == null}" th:text="${question.getTopic()}"></h5>
+      <h5 class="card-title" th:if="${question.getAnswer() != null}" th:text="${question.getTopic()} + '✅'"></h5>
+      <p class="card-text" th:text="${#dates.format(question.getTime(), 'dd-MM-yyyy HH:mm')}"></p>
+      <p class="card-text"  th:text="${'Вопрос: ' + question.getQuestion()}"></p>
+      <p class="card-text" th:if="${question.getAnswer() != null}" th:text="${'Ответ: ' + question.getAnswer()}"></p>
+    </div>
+  </div>
+</div>
+<div th:replace="~{fragments/common:: script}"></div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <title>Подписчики</title>
+</head>
+<body>
+<nav th:replace="~{fragments/common:: nav}"></nav>
+<div class="container mt-5">
+  <br>
+  <h2 th:text="'Подписки ' + ${user.getFirstName()} + ' ' + ${user.getLastName()}"></h2>
+  <br>
+  <ul class="list-group">
+    <li class="list-group-item" th:each="user : ${user.getSubscriptions()}">
+      <a th:href="@{/users/{id}(id=${user.getId()})}" th:text="${user.getFirstName() + ' ' + user.getLastName()}"></a>
+    </li>
+  </ul>
+</div>
+<div th:replace="~{fragments/common:: script}"></div>
+</body>
+</html>
